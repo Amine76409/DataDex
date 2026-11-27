@@ -1,0 +1,29 @@
+{{template "header"}}
+<h1>Mes favoris</h1>
+
+{{if .Favoris}}
+<table>
+    <tr>
+        <th>Indicatif</th>
+        <th>Pays</th>
+        <th>Actions</th>
+    </tr>
+    {{range .Favoris}}
+    <tr>
+        <td>{{if .Indicatif}}{{.Indicatif}}{{else}}Inconnu{{end}}</td>
+        <td>{{.Pays}}</td>
+        <td>
+            <a href="/avion/{{.Icao24}}">Détails</a>
+            <form action="/favoris/supprimer" method="post">
+                <input type="hidden" name="icao24" value="{{.Icao24}}">
+                <button type="submit">Supprimer</button>
+            </form>
+        </td>
+    </tr>
+    {{end}}
+</table>
+{{else}}
+<p>Tu n'as pas encore de favoris.</p>
+<a href="/vols">Voir les vols</a>
+{{end}}
+{{template "footer"}}
