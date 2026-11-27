@@ -1,0 +1,42 @@
+{{template "header"}}
+<h1>Avion {{if .Avion.Indicatif}}{{.Avion.Indicatif}}{{else}}Inconnu{{end}}</h1>
+
+<ul>
+    <li>Identifiant : {{.Avion.Icao24}}</li>
+    <li>Pays : {{.Avion.Pays}}</li>
+    <li>Longitude : {{.Avion.Longitude}}</li>
+    <li>Latitude : {{.Avion.Latitude}}</li>
+    <li>Altitude : {{printf "%.0f" .Avion.Altitude}} m</li>
+    <li>Vitesse : {{printf "%.0f" .Avion.Vitesse}} m/s</li>
+    <li>Statut : {{if .Avion.AuSol}}Au sol{{else}}En vol{{end}}</li>
+</ul>
+
+<form action="/favoris/ajouter" method="post">
+    <input type="hidden" name="icao24" value="{{.Avion.Icao24}}">
+    <input type="hidden" name="indicatif" value="{{.Avion.Indicatif}}">
+    <input type="hidden" name="pays" value="{{.Avion.Pays}}">
+    <button type="submit">Ajouter aux favoris</button>
+</form>
+
+<h2>Vols récents de cet avion</h2>
+{{if .Vols}}
+<table>
+    <tr>
+        <th>Indicatif</th>
+        <th>Départ</th>
+        <th>Arrivée</th>
+    </tr>
+    {{range .Vols}}
+    <tr>
+        <td>{{.Indicatif}}</td>
+        <td>{{.Depart}}</td>
+        <td>{{.Arrivee}}</td>
+    </tr>
+    {{end}}
+</table>
+{{else}}
+<p>Aucun vol récent trouvé.</p>
+{{end}}
+
+<a href="/vols">Retour à la liste</a>
+{{template "footer"}}
